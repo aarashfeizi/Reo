@@ -63,12 +63,6 @@
                     ))
 
 
-(define qnull?
-  (lambda (a)
-    (if (equal? a 'null) #t #f)
-   )
-  )
-
 (define join
   (lambda (a b c)
     (if (or (not (equal? (length a) (length b))) (not (equal? (length a) (length c)))) #f
