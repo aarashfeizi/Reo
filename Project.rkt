@@ -62,3 +62,21 @@
                                 (if (syncdrain (cdr a) (cdr b)) #t #f))))
                     ))
 
+
+(define qnull?
+  (lambda (a)
+    (if (equal? a 'null) #t #f)
+   )
+  )
+
+(define join
+  (lambda (a b c)
+    (if (or (not (equal? (length a) (length b))) (not (equal? (length a) (length c)))) #f
+        (if (null? a) #t
+            (if (and (qnull? (car a)) (qnull? (car b))) (if (not (qnull? (car c))) #f (if (join (cdr a) (cdr b) (cdr c)) #t #f))
+                (if (or (not (equal? (car a) (car (car c)))) (not (equal? (car b) (list-ref (car c) 1)))) #f
+                    (if (join (cdr a) (cdr b) (cdr c)) #t #f))
+             )
+         )
+     )
+   ))
