@@ -74,3 +74,16 @@
          )
      )
    ))
+
+(define create_replicator_output
+  (lambda (a)
+    (list a a)))
+
+(define connector
+  (lambda (a b c)
+     (if (or (not (equal? (length a) (length b))) (not (equal? (length a) (length c))))
+         #f
+         (let ([a_output (create_replicator_output a)])
+           (let ([r_b (list-ref a_output 0)]
+                 [r_c (list-ref a_output 1)])
+             (and (sync r_c c) (syncdrain r_b b)))))))
