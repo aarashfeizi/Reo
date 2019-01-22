@@ -101,3 +101,15 @@
            (let ([r_b (list-ref a_output 0)]
                  [r_c (list-ref a_output 1)])
              (and (sync r_c c) (syncdrain r_b b)))))))
+
+
+(define merger
+  (lambda (a b c)
+    (if (or (not (equal? (length a) (length b))) (not (equal? (length a) (length c)))) #f
+        (if (null? a) #t
+            (if (or (and (qnull? (car a)) (equal? (car b) (car c))) (and (qnull? (car b)) (equal? (car a) (car c))))
+                (merger (cdr a) (cdr b) (cdr c)) #f)
+            )
+        )
+    )
+  )
