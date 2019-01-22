@@ -31,21 +31,35 @@
   (lambda (a)
     (equal? 'null a)))
 
+;(define fifo_and_mem
+;  (lambda (a b m)
+;    (if (= (length a) 0)
+;        #t
+;        (if (and (not_null? (car a)) (not_null? m))
+;             #f
+;            (if (and (not_null? (car a)) (qnull? (car b)))
+;                (fifo_and_mem (cdr a) (cdr b) (car a))
+;                (if (and (qnull? m) (not_null? (car b)))
+;                     #f
+;                    (if (not_null? m)
+;                        (if (equal? m (car b))
+;                            (fifo_and_mem (cdr a) (cdr b) 'null)
+;                            (fifo_and_mem (cdr a) (cdr b) m))
+;                        #t)))))))
+
 (define fifo_and_mem
   (lambda (a b m)
     (if (= (length a) 0)
         #t
-        (if (and (not_null? (car a)) (not_null? m))
-             #f
-            (if (and (not_null? (car a)) (qnull? (car b)))
-                (fifo_and_mem (cdr a) (cdr b) (car a))
-                (if (and (qnull? m) (not_null? (car b)))
-                     #f
-                    (if (not_null? m)
-                        (if (equal? m (car b))
-                            (fifo_and_mem (cdr a) (cdr b) 'null)
-                            (fifo_and_mem (cdr a) (cdr b) m))
-                        #t)))))))
+        (if (qnull? m)
+            (if (and (not (qnull? (car a))) (qnull? (car b))) (fifo_and_mem (cdr a) (cdr b) (car a)) #f)
+            (if (qnull? (car b))
+                (fifo_and_mem (cdr a) (cdr b) m)
+                (if (not (qnull? (car a))) #f
+                    (if (equal? (car b) m) (fifo_and_mem (cdr a) (cdr b) 'null) #f)
+                    )
+                )
+         ))))
 
 (define fifo1
   (lambda (a b)
