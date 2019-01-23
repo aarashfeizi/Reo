@@ -114,14 +114,14 @@
     )
   )
 
-(define alternator
-  (lambda (a b console)
-    (if (not (three_eq (length a) (length b) (length console)))
-        #f
-        (let ([a_replicated (create_replicator_output a)]
-              [b_replicated (create_replicator_output b)])
-          (let ([a_rep_1 (list-ref a_replicated 0)]
-                [a_rep_2 (list-ref a_replicated 1)]
-                [b_rep_1 (list-ref b_replicated 0)]
-                [b_rep_2 (list-ref b_replicated 1)])
-            (#####))))))
+;(define alternator
+;  (lambda (a b console)
+;    (if (not (three_eq (length a) (length b) (length console)))
+;        #f
+;        (let ([a_replicated (create_replicator_output a)]
+;              [b_replicated (create_replicator_output b)])
+;          (let ([a_rep_1 (list-ref a_replicated 0)]
+;                [a_rep_2 (list-ref a_replicated 1)]
+;                [b_rep_1 (list-ref b_replicated 0)]
+;                [b_rep_2 (list-ref b_replicated 1)])
+;            (#####))))))
