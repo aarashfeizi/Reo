@@ -94,6 +94,10 @@
   (lambda (a)
     (list a a)))
 
+(define create_sync_output
+  (lambda (a)
+    a))
+
 (define connector
   (lambda (a b c)
      (if (or (not (equal? (length a) (length b))) (not (equal? (length a) (length c))))
@@ -115,14 +119,19 @@
     )
   )
 
-;(define alternator
-;  (lambda (a b console)
-;    (if (not (three_eq (length a) (length b) (length console)))
-;        #f
-;        (let ([a_replicated (create_replicator_output a)]
-;              [b_replicated (create_replicator_output b)])
-;          (let ([a_rep_1 (list-ref a_replicated 0)]
-;                [a_rep_2 (list-ref a_replicated 1)]
-;                [b_rep_1 (list-ref b_replicated 0)]
-;                [b_rep_2 (list-ref b_replicated 1)])
-;            (#####))))))
+(define create_other_merger_input
+  (lambda (a b c) ; b is null at the beginning
+    (if (= (length a) 0)
+        b
+        (if (or (qnull? (car c)) (equal? (car c) (car a)))
+             (create_other_merger_input (cdr a) (append b (list 'null)) (cdr c))
+             (if (and (not_null? (car c)) (qnull? (car a)))
+                  (create_other_merger_input (cdr a) (append b (list (car c))) (cdr c))
+                  #f)))))
+
+(define alternator
+  (lambda (a b console)
+    (if (not (three_eq (length a) (length b) (length console)))
+        #f
+        (let ([fifo1_output (create_other_merger_input a '() console)])
+          (and (connector a b a) (connector b a b) (fifo1 b fifo1_output))))))
