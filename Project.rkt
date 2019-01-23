@@ -9,6 +9,7 @@
             (if (equal? (car a) (car b))
                 (sync (cdr a) (cdr b))
                 #f)))))
+
 (define three_eq
   (lambda (a b c)
            (and (equal? a b) (equal? a c))))
