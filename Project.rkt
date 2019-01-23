@@ -135,3 +135,50 @@
         #f
         (let ([fifo1_output (create_other_merger_input a '() console)])
           (and (connector a b a) (connector b a b) (fifo1 b fifo1_output))))))
+
+
+(define call_alternator
+  (lambda (list)
+    (let ([a (list-ref list 1)]
+          [b (list-ref list 3)]
+          [c (list-ref list 5)])
+      (let ([res (alternator a b c)])
+        (begin
+          (if res
+            (display-to-file "TRUE \n" "RESULT_SEC2.txt" #:exists 'append)
+            (display-to-file "FALSE \n" "RESULT_SEC2.txt" #:exists 'append))
+          (if (= (length list) 6)
+              (display "RESULT_SEC2.txt (alternator) done \n")
+              (call_alternator (cddr (cddddr list)))))))))
+
+(define read_data_sec_2
+  (lambda ()
+      (let ([input (file->string "DATA_SEC2.txt")])
+        (let ([no_comma (string-replace input "," " ")])
+          (let ([input_list (port->list read (open-input-string no_comma))])
+            (call_alternator input_list))))))
+
+
+(define call_connector
+  (lambda (list)
+    (let ([a (list-ref list 1)]
+          [b (list-ref list 3)]
+          [c (list-ref list 5)])
+      (let ([res (connector a b c)])
+        (begin
+          (if res
+            (display-to-file "TRUE \n" "RESULT_SEC1.txt" #:exists 'append)
+            (display-to-file "FALSE \n" "RESULT_SEC1.txt" #:exists 'append))
+          (if (= (length list) 6)
+              (display "RESULT_SEC1.txt (connctor) done \n")
+              (call_connector (cddr (cddddr list)))))))))
+
+(define read_data_sec_1
+  (lambda ()
+      (let ([input (file->string "DATA_SEC1.txt")])
+        (let ([no_comma (string-replace input "," " ")])
+          (let ([input_list (port->list read (open-input-string no_comma))])
+            (call_connector input_list))))))
+
+(read_data_sec_1)
+(read_data_sec_2)
